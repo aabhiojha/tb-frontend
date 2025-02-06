@@ -9,7 +9,7 @@ import "leaflet/dist/leaflet.css";
 
 import L from "leaflet";
 import marker from "../../assets/map-marker-svgrepo-com.svg";
-
+// import useStore from "../../store/store";
 
 const redOptions = { color: "red" };
 
@@ -20,114 +20,53 @@ const myIcon = new L.Icon({
   iconSize: [32, 45],
 });
 
+const MapComponent = ({ routeData }) => {
+  console.log(JSON.stringify(routeData, null, 4));
+  const polyData = routeData.reduce((acc, current, index, arr) => {
+    if (index < arr.length - 1) {
+      const start = arr[index];
+      const end = arr[index + 1];
+      acc.push([
+        [start.coordinates.latitude, start.coordinates.longitude],
+        [end.coordinates.latitude, end.coordinates.longitude],
+      ]);
+    }
+    return acc;
+  }, []);
 
-const markers = {
-  routes: [
-    {
-      from: "Lukla",
-      to: "Phakding",
-      coordinates: {
-        from: [27.6864, 86.7294],
-        to: [27.7403, 86.7138],
-      },
-    },
-    {
-      from: "Phakding",
-      to: "Namche Bazaar",
-      coordinates: {
-        from: [27.7403, 86.7138],
-        to: [27.8058, 86.7149],
-      },
-    },
-    {
-      from: "Namche Bazaar",
-      to: "Tengboche",
-      coordinates: {
-        from: [27.8058, 86.7149],
-        to: [27.837, 86.7637],
-      },
-    },
-    {
-      from: "Tengboche",
-      to: "Dingboche",
-      coordinates: {
-        from: [27.837, 86.7637],
-        to: [27.8917, 86.8252],
-      },
-    },
-    {
-      from: "Dingboche",
-      to: "Lobuche",
-      coordinates: {
-        from: [27.8917, 86.8252],
-        to: [27.9468, 86.8103],
-      },
-    },
-    {
-      from: "Lobuche",
-      to: "Gorak Shep",
-      coordinates: {
-        from: [27.9468, 86.8103],
-        to: [28.0037, 86.8528],
-      },
-    },
-    {
-      from: "Gorak Shep",
-      to: "Everest Base Camp (EBC)",
-      coordinates: {
-        from: [28.0037, 86.8528],
-        to: [28.0043, 86.852],
-      },
-    },
-    {
-      from: "Everest Base Camp (EBC)",
-      to: "Kala Patthar",
-      coordinates: {
-        from: [28.0043, 86.852],
-        to: [27.9997, 86.8285],
-      },
-    },
-    {
-      from: "Kala Patthar",
-      to: "Pheriche",
-      coordinates: {
-        from: [27.9997, 86.8285],
-        to: [27.8853, 86.8127],
-      },
-    },
-  ],
-};
-
-const MapComponent = () => {
- 
+  console.log(polyData);
   return (
     <MapContainer
-    className="map-container"
-    style={{width: "600px", height: "600px"}}
+      className="map-container"
+      style={{ width: "600px", height: "600px" }}
       center={[27.6864, 86.7294]} // Centered near Lukla
-      zoom={10} // Suitable zoom level for trekking routes
+      zoom={7} // Suitable zoom level for trekking routes
       scrollWheelZoom={true}
     >
       <TileLayer
         attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
         url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
       />
-      {markers.routes.map((route, index) => (
+      {routeData.map((route, index) => (
         <Marker
           key={index} // Ensure a unique key for each marker
-          position={route.coordinates.from} // Marker position for "from" coordinates
+          position={[route.coordinates.latitude, route.coordinates.longitude]} // Marker position for "from" coordinates
           icon={myIcon} // Custom marker icon
         >
           <Popup>
-            <strong>From:</strong> {route.from}
+            <strong>Day:</strong> {route.day}
             <br />
-            <strong>To:</strong> {route.to}
+            <strong>Location:</strong> {route.location}
             <br />
-            <strong>Coordinates:</strong> {route.coordinates.from.join(", ")}
+            <strong>Hightlight:</strong> {route.highlight}
+            <br />
+            <strong>Coordinates:</strong>{" "}
+            {[route.coordinates.latitude, route.coordinates.longitude]}
           </Popup>
         </Marker>
       ))}
-      {/* <Polyline pathOptions={redOptions} positions={multiPolyline} /> */}
+
+      <Polyline pathOptions={redOptions} positions={polyData} />
     </MapContainer>
   );
 };

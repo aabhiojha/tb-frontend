@@ -48,7 +48,7 @@ const newRes = JSON.stringify(result)
       if (response2.status < 300) {
         const data = response2.data.response || response2.data.itinerary.itinerary
         if (Array.isArray(data)) {
-          setResult(JSON.stringify(data))
+          setResult(data)
         } else {
           setResult(data)
         }
@@ -116,7 +116,7 @@ const newRes = JSON.stringify(result)
                 "Suggest some of the top places to visit in Nepal",
                 "Must-try foods in Nepal",
                 "Top cultural sites in Nepal",
-                "Best trekking routes in Nepal",
+                "Annapurna Base Camp",
               ].map((text, index) => (
                 <div
                   key={index}
@@ -131,7 +131,7 @@ const newRes = JSON.stringify(result)
         ) : (
           /* Chat Output Section */
           
-          <><Response /> <MapComponent /></>
+          <Response />
         )}
       </div>
 
