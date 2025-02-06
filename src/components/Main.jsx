@@ -6,6 +6,7 @@ import { RiVoiceprintFill } from "react-icons/ri";
 import Response from "./Response.jsx";
 import { IoChevronUpSharp } from "react-icons/io5";
 import axios from "axios";
+import MapComponent from "./Map/MapComponent.jsx";
 
 const Main = () => {
   const [isWriting, setIsWriting] = useState(false);
@@ -83,6 +84,7 @@ const newRes = JSON.stringify(result)
 
   return (
     <div className="relative w-full h-screen flex flex-col items-center justify-between p-6">
+     
       <div className="w-full h-14 flex justify-between items-center mt-0">
         <img
           src="/trekBahadur_logo.png"
@@ -128,7 +130,8 @@ const newRes = JSON.stringify(result)
           </div>
         ) : (
           /* Chat Output Section */
-          <Response />
+          
+          <><Response /> <MapComponent /></>
         )}
       </div>
 
