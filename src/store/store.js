@@ -1,5 +1,4 @@
 import { create } from "zustand";
-import { persist, createJSONStorage } from "zustand/middleware";
 
 const useStore = create((set) => ({
   userData: null,
@@ -67,7 +66,7 @@ const useStore = create((set) => ({
   resultArr: [],
   setResult: (result) => {
     if (Array.isArray(result)) {
-      set((state) => ({ resultArr: [result] }));
+      set(() => ({ resultArr: [result] }));
     } else {
       set((state) => ({ result: [...state.result, result] }));
     }

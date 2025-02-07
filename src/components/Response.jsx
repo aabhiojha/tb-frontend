@@ -1,17 +1,23 @@
+import { useEffect, useState } from "react";
 import useStore from "../store/store.js";
 import ReactMarkdown from "react-markdown";
-import { FcDebian } from "react-icons/fc";
-import Loading from "./Loading.jsx";
-import { useState } from "react";
-import MapComponent from "./Map/MapComponent.jsx";
 import { IoClose } from "react-icons/io5";
+import Loading from "./Loading.jsx";
+import MapComponent from "./Map/MapComponent.jsx";
 
 const Response = () => {
   const recentPrompt = useStore((state) => state.recentPrompt);
   const [isLoading, setIsLoading] = useState(false);
   const result = useStore((state) => state.result);
   const resultArr = useStore((state) => state.resultArr);
-  const [showMap, setShowMap] = useState(true);
+  const [showMap, setShowMap] = useState(false);
+
+  // Auto-show map when resultArr updates but keep it toggleable
+  useEffect(() => {
+    if (Array.isArray(resultArr) && resultArr.length > 0) {
+      setShowMap(true);
+    }
+  }, [resultArr]);
 
   return (
     <div className="relative">
@@ -23,11 +29,7 @@ const Response = () => {
             </div>
 
             {!isLoading ? (
-              <div className="flex items-start space-x-4 w-3/4 ">
-                {/* <div>
-                  <FcDebian className="text-4xl" />
-                </div> */}
-
+              <div className="flex items-start space-x-4 w-3/4">
                 <ReactMarkdown className="prose prose-md">
                   {result[idx]}
                 </ReactMarkdown>
@@ -50,7 +52,7 @@ const Response = () => {
 
       {showMap && resultArr.length > 0 && (
         <div className="fixed inset-0 bg-black bg-opacity-50 flex justify-center items-center">
-          <div className="relative w-full max-w-3xl h-[60vh]rounded-lg shadow-lg p-4">
+          <div className="relative w-full max-w-3xl h-[60vh]  rounded-lg shadow-lg p-4">
             <button
               onClick={() => setShowMap(false)}
               className="absolute -top-6 -right-6 bg-white p-2 rounded-full shadow-md hover:bg-gray-200 transition"

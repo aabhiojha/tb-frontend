@@ -1,12 +1,9 @@
 import { useRef, useState } from "react";
 import useStore from "../store/store.js";
 import { useNavigate } from "react-router-dom";
-// import model from "../config/gemini.js";
 import { RiVoiceprintFill } from "react-icons/ri";
 import Response from "./Response.jsx";
-import { IoChevronUpSharp } from "react-icons/io5";
 import axios from "axios";
-import MapComponent from "./Map/MapComponent.jsx";
 
 const Main = () => {
   const [isWriting, setIsWriting] = useState(false);
@@ -21,9 +18,7 @@ const Main = () => {
   const setRecentPrompt = useStore((state) => state.setRecentPrompt);
   const setPrevPrompt = useStore((state) => state.setPrevPrompt);
   const inputElement = useRef(null);
-  const result = useStore((state) => state.result);
   const setResult = useStore((state) => state.setResult);
-const newRes = JSON.stringify(result)
   const handleEnter = (e) => {
     if (e.key === "Enter") sendInput();
   };
@@ -40,51 +35,31 @@ const newRes = JSON.stringify(result)
     setPrevPrompt(input);
 
     try {
-      const response2 = await axios.post("http://127.0.0.1:5000/generate-itinerary", {
-        query: input
-      })
-
+      const response2 = await axios.post(
+        "http://127.0.0.1:5000/generate-itinerary",
+        {
+          query: input,
+        }
+      );
 
       if (response2.status < 300) {
-        const data = response2.data.response || response2.data.itinerary.itinerary
+        const data =
+          response2.data.response || response2.data.itinerary.itinerary;
         if (Array.isArray(data)) {
-          setResult(data)
+          setResult(data);
         } else {
-          setResult(data)
+          setResult(data);
         }
-        console.log(data)
-        // setResult(response2.data.response);
+        console.log(data);
         inputElement.current.value = "";
       }
     } catch (err) {
       console.log("Error occurred:", err);
     }
-    //   const command = {
-    //     input,
-    //     result: resultText,
-    //   };
-
-    //   try {
-    //     const response = await fetch("/api/users/addCommand", {
-    //       method: "POST",
-    //       headers: {
-    //         "Content-Type": "application/json",
-    //       },
-    //       body: JSON.stringify(command),
-    //     });
-
-    //     if (response.ok) {
-    //       setIsWriting(false);
-    //     }
-    //
-    //   } catch (err) {
-    //     console.log("Error sending the input command ", err);
-    //   }
   };
 
   return (
     <div className="relative w-full h-screen flex flex-col items-center justify-between p-6">
-     
       <div className="w-full h-14 flex justify-between items-center mt-0">
         <img
           src="/trekBahadur_logo.png"
@@ -129,8 +104,6 @@ const newRes = JSON.stringify(result)
             </div>
           </div>
         ) : (
-          /* Chat Output Section */
-          
           <Response />
         )}
       </div>
