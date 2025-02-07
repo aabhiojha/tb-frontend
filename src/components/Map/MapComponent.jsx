@@ -33,17 +33,19 @@ const MapComponent = ({ routeData }) => {
 
   return (
     <MapContainer
-      className="map-container w-full h-[600px] rounded-2xl"
+      className="map-container w-[800px] h-[600px] rounded-2xl"
       center={[28.2403, 83.9856]}
       zoom={7}
       scrollWheelZoom={true}
     >
       <TileLayer
         attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
-        url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
+        // url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
+        // url = "https://tiles.stadiamaps.com/tiles/alidade_satellite/{z}/{x}/{y}{r}.png"
+        url = "https://tiles.stadiamaps.com/tiles/alidade_satellite/{z}/{x}/{y}{r}.png"
       />
 
-      {routeData.map(({ day, location, highlight, coordinates }, index) => (
+      {routeData.map(({ day, location, highlight, elevation, coordinates }, index) => (
         <Marker
           key={`${location}-${day}-${index}`}
           position={[coordinates.latitude, coordinates.longitude]}
@@ -54,6 +56,8 @@ const MapComponent = ({ routeData }) => {
             <br />
             <strong>Location:</strong> {location}
             <br />
+            <strong>Elevation:</strong> {elevation} meters
+            <br />
             <strong>Highlight:</strong> {highlight}
             <br />
             <strong>Coordinates:</strong> {coordinates.latitude},{" "}
@@ -61,7 +65,6 @@ const MapComponent = ({ routeData }) => {
           </Popup>
         </Marker>
       ))}
-
       <Polyline pathOptions={redOptions} positions={polyData} />
     </MapContainer>
   );
