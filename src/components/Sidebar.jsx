@@ -7,14 +7,13 @@ import { IoSettingsSharp } from "react-icons/io5";
 import { FaRegCircleUser } from "react-icons/fa6";
 import { useNavigate } from "react-router-dom";
 import useStore from "../store/store.js";
+import useChatStore from "../store/chatStore.js";
 
 const Sidebar = () => {
   const [isOpen, setIsOpen] = useState(false);
-  const prevPrompt = useStore((state) => state.prevPrompt);
-  const setRecentPrompt = useStore((state) => state.setRecentPrompt);
   const setUserData = useStore((state) => state.setUserData);
   const token = useStore((state) => state.accessToken);
-
+  const chatHistory = useChatStore((state) => state.chatHistory);
   const loggedIn = useStore((state) => state.loggedIn);
   const setLoggedIn = useStore((state) => state.setLoggedIn);
 
@@ -48,10 +47,6 @@ const Sidebar = () => {
     navigate("/register");
   };
 
-  const openPrompt = (prompt) => {
-    setRecentPrompt(prompt);
-  };
-
   return (
     <>
       <button
@@ -81,21 +76,17 @@ const Sidebar = () => {
           <div className="w-full h-10 gap-2 mt-4 flex">
             <p className="text-sm">Recent</p>
           </div>
-          <div className="w-full p-2">
-            {prevPrompt.length > 0 ? (
-              prevPrompt.map((prompt, index) => (
-                <p
-                  key={index}
-                  className="overflow-hidden whitespace-nowrap text-sm text-gray-900 bg-slate-100 px-2 rounded-md mb-4 cursor-pointer"
-                  onClick={() => openPrompt(prompt)}
-                >
-                  {prompt.slice(0, 18)}
+          {chatHistory.length > 0 ? (
+            <div className="">
+              {chatHistory.map((text, index) => (
+                <p className="bg-slate-200 mb-2" key={index}>
+                  {text.msg}
                 </p>
-              ))
-            ) : (
-              <p className="text-sm text-gray-500">No recent prompts</p>
-            )}
-          </div>
+              ))}
+            </div>
+          ) : (
+            ""
+          )}
         </div>
 
         <div className="w-full p-4 border-t-2">

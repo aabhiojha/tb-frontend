@@ -4,9 +4,10 @@ import ReactMarkdown from "react-markdown";
 import { IoClose } from "react-icons/io5";
 import Loading from "./Loading.jsx";
 import MapComponent from "./Map/MapComponent.jsx";
+import useChatStore from "../store/chatStore.js";
 
 const Response = () => {
-  const recentPrompt = useStore((state) => state.recentPrompt);
+  const chatHistory = useChatStore((state) => state.chatHistory);
   const [isLoading, setIsLoading] = useState(false);
   const result = useStore((state) => state.result);
   const resultArr = useStore((state) => state.resultArr);
@@ -22,16 +23,16 @@ const Response = () => {
   return (
     <div className="relative">
       <div className="w-full flex-1 overflow-auto no-scrollbar max-h-[65vh] px-8 py-4 space-y-6 rounded-md">
-        {recentPrompt.map((prompt, idx) => (
+        {chatHistory.map((prompt, idx) => (
           <div key={idx} className="flex flex-col items-start space-y-4">
             <div className="self-end w-auto px-6 py-2 bg-slate-300 rounded-2xl">
-              {isLoading ? "..." : prompt}
+              {isLoading ? "..." : prompt.msg}
             </div>
 
             {!isLoading ? (
               <div className="flex items-start space-x-4 w-3/4">
                 <ReactMarkdown className="prose prose-md">
-                  {result[idx]}
+                  {prompt.ai}
                 </ReactMarkdown>
               </div>
             ) : (

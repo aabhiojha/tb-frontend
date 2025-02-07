@@ -4,6 +4,7 @@ import { useNavigate } from "react-router-dom";
 import { RiVoiceprintFill } from "react-icons/ri";
 import Response from "./Response.jsx";
 import axios from "axios";
+import useChatStore from "../store/chatStore.js";
 
 const Main = () => {
   const [isWriting, setIsWriting] = useState(false);
@@ -13,12 +14,12 @@ const Main = () => {
   const loggedIn = useStore((state) => state.loggedIn);
   const firstName =
     loggedIn && userData.fullName ? userData.fullName.split(" ")[0] : "there";
-
-  const recentPrompt = useStore((state) => state.recentPrompt);
-  const setRecentPrompt = useStore((state) => state.setRecentPrompt);
-  const setPrevPrompt = useStore((state) => state.setPrevPrompt);
+  const setChatHistory = useChatStore((state) => state.setChatHistory);
+  const chatHistory = useChatStore((state) => state.chatHistory);
   const inputElement = useRef(null);
   const setResult = useStore((state) => state.setResult);
+  const [isSendable, setIsSendable] = useState(true);
+
   const handleEnter = (e) => {
     if (e.key === "Enter") sendInput();
   };
@@ -29,10 +30,10 @@ const Main = () => {
   };
 
   const sendInput = async () => {
+    setIsSendable(false);
     const input = inputElement.current.value;
 
-    setRecentPrompt(input);
-    setPrevPrompt(input);
+    // setChatHistory(input);
 
     try {
       const response2 = await axios.post(
@@ -48,9 +49,10 @@ const Main = () => {
         if (Array.isArray(data)) {
           setResult(data);
         } else {
-          setResult(data);
+          setChatHistory(data, input);
         }
         console.log(data);
+        setIsSendable(true);
         inputElement.current.value = "";
       }
     } catch (err) {
@@ -77,7 +79,7 @@ const Main = () => {
       </div>
 
       <div className="flex-1 w-full flex flex-col items-center justify-between overflow-hidden px-32">
-        {!recentPrompt.length ? (
+        {!chatHistory.length ? (
           <div className="w-full flex flex-col items-center justify-center flex-grow space-y-10">
             <div className="text-6xl font-medium bg-gradient-to-r from-blue-900 via-red-500 to-purple-900 bg-clip-text text-transparent">
               Hi {firstName},
