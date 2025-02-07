@@ -4,14 +4,14 @@ import { FcDebian } from "react-icons/fc";
 import Loading from "./Loading.jsx";
 import { useState } from "react";
 import MapComponent from "./Map/MapComponent.jsx";
-import { IoClose } from "react-icons/io5"; // Close icon
+import { IoClose } from "react-icons/io5";
 
 const Response = () => {
   const recentPrompt = useStore((state) => state.recentPrompt);
   const [isLoading, setIsLoading] = useState(false);
   const result = useStore((state) => state.result);
   const resultArr = useStore((state) => state.resultArr);
-  const [showMap, setShowMap] = useState(false); // Toggle state for map
+  const [showMap, setShowMap] = useState(true);
 
   return (
     <div className="relative">
@@ -24,9 +24,9 @@ const Response = () => {
 
             {!isLoading ? (
               <div className="flex items-start space-x-4 w-3/4 ">
-                <div>
+                {/* <div>
                   <FcDebian className="text-4xl" />
-                </div>
+                </div> */}
 
                 <ReactMarkdown className="prose prose-md">
                   {result[idx]}

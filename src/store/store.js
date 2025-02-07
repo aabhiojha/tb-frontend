@@ -16,14 +16,14 @@ const useStore = create((set) => ({
   accessToken: null,
   refreshToken: null,
 
-  // Set the logged-in state and store tokens
+
   setLoggedIn: (loggedIn, accessToken = null, refreshToken = null) => {
     if (loggedIn) {
-      // Store tokens in localStorage
+
       localStorage.setItem("accessToken", accessToken);
       localStorage.setItem("refreshToken", refreshToken);
     } else {
-      // Remove tokens from localStorage
+
       localStorage.removeItem("accessToken");
       localStorage.removeItem("refreshToken");
     }
@@ -37,7 +37,7 @@ const useStore = create((set) => ({
 
     let userData = null;
 
-    // Check if userData exists and is a valid JSON string
+
     if (userDataString) {
       try {
         userData = JSON.parse(userDataString);
