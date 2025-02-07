@@ -14,6 +14,7 @@ const Sidebar = () => {
   const setUserData = useStore((state) => state.setUserData);
   const token = useStore((state) => state.accessToken);
   const chatHistory = useChatStore((state) => state.chatHistory);
+  const setChatHistory = useChatStore((state) => state.setChatHistory); // Add this
   const loggedIn = useStore((state) => state.loggedIn);
   const setLoggedIn = useStore((state) => state.setLoggedIn);
 
@@ -47,6 +48,10 @@ const Sidebar = () => {
     navigate("/register");
   };
 
+  const handleNewChat = () => {
+    window.location.reload(); // Reload page to start a new chat
+  };
+
   return (
     <>
       <button
@@ -68,7 +73,10 @@ const Sidebar = () => {
         </div>
 
         <div className="flex-1 overflow-y-auto px-4">
-          <div className="w-full h-10 flex items-center gap-2 cursor-pointer">
+          <div
+            className="w-full h-10 flex items-center gap-2 cursor-pointer"
+            onClick={handleNewChat} // Add onClick to handle new chat
+          >
             <p className="text-sm">New</p>
             <IoMdAdd />
           </div>
@@ -77,10 +85,15 @@ const Sidebar = () => {
             <p className="text-sm">Recent</p>
           </div>
           {chatHistory.length > 0 ? (
-            <div className="">
+            <div>
               {chatHistory.map((text, index) => (
-                <p className="bg-slate-200 mb-2" key={index}>
-                  {text.msg}
+                <p
+                  className="bg-slate-200 rounded-2xl p-1 px-2 mb-2 cursor-pointer text-sm"
+                  key={index}
+                >
+                  {text && text.msg.length > 15
+                    ? text.msg.slice(0, 15) + "..."
+                    : text.msg}
                 </p>
               ))}
             </div>
