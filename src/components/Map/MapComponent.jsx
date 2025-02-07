@@ -23,14 +23,19 @@ const MapComponent = ({ routeData }) => {
     return <p>No route data available</p>;
 
   // Generate polyline path
-  const polyData = routeData.slice(0, -1).map((point, index) => [
-    [point.coordinates.latitude, point.coordinates.longitude],
-    [
-      routeData[index + 1].coordinates.latitude,
-      routeData[index + 1].coordinates.longitude,
-    ],
-  ]);
-
+  const polyData = routeData.reduce((acc, point, index, arr) => {
+    if (index < arr.length - 1) {
+      acc.push([
+        [point.coordinates.latitude, point.coordinates.longitude],
+        [
+          arr[index + 1].coordinates.latitude,
+          arr[index + 1].coordinates.longitude,
+        ],
+      ]);
+    }
+    return acc;
+  }, []);
+  console.log(polyData);
   return (
     <MapContainer
       className="map-container w-[800px] h-[600px] rounded-2xl"
