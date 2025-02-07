@@ -1,18 +1,14 @@
 import React, { useRef } from "react";
 import { FcGoogle } from "react-icons/fc";
 import { ImFacebook2 } from "react-icons/im";
-
 import { useNavigate } from "react-router-dom";
 import useStore from "../../store/store.js";
 
 const Login = () => {
   const navigate = useNavigate();
-
   const emailElement = useRef(null);
-
   const passwordElement = useRef(null);
   const setLoggedIn = useStore((state) => state.setLoggedIn);
-
   const setUserData = useStore((state) => state.setUserData);
 
   const submitForm = async (e) => {

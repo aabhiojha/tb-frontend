@@ -6,62 +6,58 @@ import {
   Polyline,
 } from "react-leaflet";
 import "leaflet/dist/leaflet.css";
-
 import L from "leaflet";
 import marker from "../../assets/map-marker-svgrepo-com.svg";
-// import useStore from "../../store/store";
 
 const redOptions = { color: "red" };
 
 const myIcon = new L.Icon({
   iconUrl: marker,
   iconRetinaUrl: marker,
-  popupAnchor: [-0, -0],
   iconSize: [32, 45],
+  popupAnchor: [0, -10],
 });
 
 const MapComponent = ({ routeData }) => {
-  console.log(JSON.stringify(routeData, null, 4));
-  const polyData = routeData.reduce((acc, current, index, arr) => {
-    if (index < arr.length - 1) {
-      const start = arr[index];
-      const end = arr[index + 1];
-      acc.push([
-        [start.coordinates.latitude, start.coordinates.longitude],
-        [end.coordinates.latitude, end.coordinates.longitude],
-      ]);
-    }
-    return acc;
-  }, []);
+  if (!routeData || routeData.length === 0)
+    return <p>No route data available</p>;
 
-  console.log(polyData);
+  // Generate polyline path
+  const polyData = routeData.slice(0, -1).map((point, index) => [
+    [point.coordinates.latitude, point.coordinates.longitude],
+    [
+      routeData[index + 1].coordinates.latitude,
+      routeData[index + 1].coordinates.longitude,
+    ],
+  ]);
+
   return (
     <MapContainer
-      className="map-container"
-      style={{ width: "600px", height: "600px" }}
-      center={[27.6864, 86.7294]} // Centered near Lukla
-      zoom={7} // Suitable zoom level for trekking routes
+      className="map-container w-full h-[600px] rounded-2xl"
+      center={[28.2403, 83.9856]}
+      zoom={7}
       scrollWheelZoom={true}
     >
       <TileLayer
         attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
         url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
       />
-      {routeData.map((route, index) => (
+
+      {routeData.map(({ day, location, highlight, coordinates }, index) => (
         <Marker
-          key={index} // Ensure a unique key for each marker
-          position={[route.coordinates.latitude, route.coordinates.longitude]} // Marker position for "from" coordinates
-          icon={myIcon} // Custom marker icon
+          key={`${location}-${day}-${index}`}
+          position={[coordinates.latitude, coordinates.longitude]}
+          icon={myIcon}
         >
           <Popup>
-            <strong>Day:</strong> {route.day}
+            <strong>Day:</strong> {day}
             <br />
-            <strong>Location:</strong> {route.location}
+            <strong>Location:</strong> {location}
             <br />
-            <strong>Hightlight:</strong> {route.highlight}
+            <strong>Highlight:</strong> {highlight}
             <br />
-            <strong>Coordinates:</strong>{" "}
-            {[route.coordinates.latitude, route.coordinates.longitude]}
+            <strong>Coordinates:</strong> {coordinates.latitude},{" "}
+            {coordinates.longitude}
           </Popup>
         </Marker>
       ))}
