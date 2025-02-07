@@ -50,7 +50,7 @@ const Response = () => {
 
       {showMap && resultArr.length > 0 && (
         <div className="fixed inset-0 bg-black bg-opacity-50 flex justify-center items-center">
-          <div className="relative w-full max-w-3xl h-[60vh] bg-white rounded-lg shadow-lg p-4">
+          <div className="relative w-full max-w-3xl h-[60vh]rounded-lg shadow-lg p-4">
             <button
               onClick={() => setShowMap(false)}
               className="absolute -top-6 -right-6 bg-white p-2 rounded-full shadow-md hover:bg-gray-200 transition"
