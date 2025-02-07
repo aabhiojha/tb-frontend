@@ -25,7 +25,7 @@ const Response = () => {
       <div className="w-full flex-1 overflow-auto no-scrollbar max-h-[65vh] px-8 py-4 space-y-6 rounded-md">
         {chatHistory.map((prompt, idx) => (
           <div key={idx} className="flex flex-col items-start space-y-4">
-            <div className="self-end w-auto px-6 py-2 bg-slate-300 rounded-2xl">
+            <div className="self-end w-72 px-6 py-2 bg-slate-300 rounded-2xl">
               {isLoading ? "..." : prompt.msg}
             </div>
 
