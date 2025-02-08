@@ -19,7 +19,7 @@ const Main = () => {
   const inputElement = useRef(null);
   const setResult = useStore((state) => state.setResult);
   const [isSendable, setIsSendable] = useState(true);
-
+  const [isLoading, setIsLoading] = useState(false);
   const handleEnter = (e) => {
     if (e.key === "Enter") sendInput();
   };
@@ -34,6 +34,7 @@ const Main = () => {
     const input = inputElement.current.value;
 
     // setChatHistory(input);
+    setIsLoading(true);
 
     try {
       const response2 = await axios.post(
@@ -44,6 +45,7 @@ const Main = () => {
       );
 
       if (response2.status < 300) {
+        setIsLoading(false);
         const data =
           response2.data.response || response2.data.itinerary.itinerary;
         if (Array.isArray(data)) {
@@ -106,7 +108,7 @@ const Main = () => {
             </div>
           </div>
         ) : (
-          <Response />
+          <Response isLoading={isLoading} />
         )}
       </div>
 

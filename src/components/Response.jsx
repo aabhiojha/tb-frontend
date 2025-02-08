@@ -6,10 +6,9 @@ import Loading from "./Loading.jsx";
 import MapComponent from "./Map/MapComponent.jsx";
 import useChatStore from "../store/chatStore.js";
 
-const Response = () => {
+const Response = ({ isLoading }) => {
   const chatHistory = useChatStore((state) => state.chatHistory);
-  const [isLoading, setIsLoading] = useState(false);
-  const result = useStore((state) => state.result);
+
   const resultArr = useStore((state) => state.resultArr);
   const [showMap, setShowMap] = useState(false);
 
@@ -52,7 +51,7 @@ const Response = () => {
       )}
 
       {showMap && resultArr.length > 0 && (
-        <div className="fixed inset-0 bg-black bg-opacity-50 flex justify-center items-center">
+        <div className="fixed inset-0 bg-black bg-opacity-50 flex justify-center items-start pt-10 ">
           <div className="relative w-full max-w-3xl h-[60vh]  rounded-lg shadow-lg p-4">
             <button
               onClick={() => setShowMap(false)}
