@@ -5,6 +5,7 @@ import { IoClose } from "react-icons/io5";
 import Loading from "./Loading.jsx";
 import MapComponent from "./Map/MapComponent.jsx";
 import useChatStore from "../store/chatStore.js";
+import { FcLineChart } from "react-icons/fc";
 
 const Response = ({ isLoading }) => {
   const chatHistory = useChatStore((state) => state.chatHistory);

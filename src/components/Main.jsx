@@ -81,7 +81,7 @@ const Main = () => {
         </div>
       </div>
 
-      <div className="flex-1 w-full flex flex-col items-center justify-between overflow-hidden px-22">
+      <div className="flex-1 w-full flex flex-col items-center justify-between overflow-hidden px-28">
         {!chatHistory.length ? (
           <div className="w-full flex flex-col items-center justify-center flex-grow space-y-10 -mt-28">
             <div className="text-6xl font-medium bg-gradient-to-r from-blue-900 via-red-500 to-purple-900 bg-clip-text text-transparent">
@@ -94,9 +94,9 @@ const Main = () => {
             <div className="grid grid-cols-2 md:grid-cols-4 gap-4 px-6">
               {[
                 "Suggest some of the top places to visit in Nepal",
-                "Must-try foods in Nepal",
+                "Visiting Nepal for two weeks, seeking trek ideas",
                 "Top cultural sites in Nepal",
-                "Annapurna Base Camp",
+                "Mt.Everest Base Camp Trek",
               ].map((text, index) => (
                 <div
                   key={index}
