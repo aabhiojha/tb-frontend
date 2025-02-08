@@ -64,7 +64,7 @@ const Sidebar = () => {
       <div
         className={`fixed inset-y-0 left-0 bg-white w-64 shadow-md transition-transform transform ${
           isOpen ? "translate-x-0" : "-translate-x-full"
-        } md:translate-x-0 md:relative md:w-64 z-40 flex flex-col h-screen`}
+        } md:translate-x-0 md:relative md:w-44 z-40 flex flex-col h-screen`}
       >
         <div className="w-full h-20 border-b-2 flex items-center px-4">
           <button className="md:hidden" onClick={toggleSidebar}>

@@ -71,5 +71,9 @@ const useStore = create((set) => ({
       set((state) => ({ result: [...state.result, result] }));
     }
   },
+
+  showMap:false,
+  setShowMap: () => set(state => ({ showMap: !state.showMap }))
+
 }));
 export default useStore;

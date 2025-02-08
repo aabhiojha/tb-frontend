@@ -18,6 +18,8 @@ const Main = () => {
   const chatHistory = useChatStore((state) => state.chatHistory);
   const inputElement = useRef(null);
   const setResult = useStore((state) => state.setResult);
+  const showMap = useStore((state) => state.showMap);
+
   const [isSendable, setIsSendable] = useState(true);
   const [isLoading, setIsLoading] = useState(false);
   const handleEnter = (e) => {
@@ -31,10 +33,8 @@ const Main = () => {
 
   const sendInput = async () => {
     setIsSendable(false);
-    const input = inputElement.current.value;
 
-    // setChatHistory(input);
-    setIsLoading(true);
+    const input = inputElement.current.value;
 
     try {
       const response2 = await axios.post(
@@ -48,6 +48,7 @@ const Main = () => {
         setIsLoading(false);
         const data =
           response2.data.response || response2.data.itinerary.itinerary;
+
         if (Array.isArray(data)) {
           setResult(data);
         } else {
@@ -80,9 +81,9 @@ const Main = () => {
         </div>
       </div>
 
-      <div className="flex-1 w-full flex flex-col items-center justify-between overflow-hidden px-32">
+      <div className="flex-1 w-full flex flex-col items-center justify-between overflow-hidden px-22">
         {!chatHistory.length ? (
-          <div className="w-full flex flex-col items-center justify-center flex-grow space-y-10">
+          <div className="w-full flex flex-col items-center justify-center flex-grow space-y-10 -mt-28">
             <div className="text-6xl font-medium bg-gradient-to-r from-blue-900 via-red-500 to-purple-900 bg-clip-text text-transparent">
               Hi {firstName},
             </div>
@@ -99,7 +100,7 @@ const Main = () => {
               ].map((text, index) => (
                 <div
                   key={index}
-                  className="flex-wrap h-32 rounded-2xl p-6 bg-gradient-to-t cursor-pointer border border-slate-200 shadow-md hover:shadow-2xl transition duration-300 ease-in-out overflow-hidden"
+                  className="flex-wrap h-40 rounded-2xl p-6 bg-gradient-to-t cursor-pointer border border-slate-200 shadow-md hover:shadow-2xl transition duration-300 ease-in-out overflow-hidden align-middle"
                   onClick={() => sendPrompt(text)}
                 >
                   <p className="text-md font-medium text-slate-800">{text}</p>
@@ -111,23 +112,43 @@ const Main = () => {
           <Response isLoading={isLoading} />
         )}
       </div>
+      {!showMap ? (
+        <div className="absolute bottom-6 w-3/5 flex items-center ">
+          <input
+            className="border border-slate-600 rounded-3xl w-full h-12 p-6 pl-8 pr-16 focus:outline-none"
+            type="text"
+            ref={inputElement}
+            placeholder="Enter your message"
+            onKeyDown={handleEnter}
+            onChange={() => setIsWriting(true)}
+          />
 
-      <div className="absolute bottom-6 w-3/5 flex items-center">
-        <input
-          className="border border-slate-600 rounded-3xl w-full h-12 p-6 pl-8 pr-16 focus:outline-none"
-          type="text"
-          ref={inputElement}
-          placeholder="Enter your message"
-          onKeyDown={handleEnter}
-          onChange={() => setIsWriting(true)}
-        />
-        <div
-          className="absolute w-14 h-8 rounded-lg right-4 text-slate-700 font-medium top-1/2 transform -translate-y-1/2 cursor-pointer flex items-center justify-center"
-          onClick={sendInput}
-        >
-          {!isWriting ? <RiVoiceprintFill className="text-2xl" /> : "Send"}
+          <div
+            className="absolute w-14 h-8 rounded-lg right-4 text-slate-700 font-medium top-1/2 transform -translate-y-1/2 cursor-pointer flex items-center justify-center"
+            onClick={sendInput}
+          >
+            {!isWriting ? <RiVoiceprintFill className="text-2xl" /> : "Send"}
+          </div>
         </div>
-      </div>
+      ) : (
+        <div className="absolute bottom-6 w-1/3 flex items-center -ml-96 mr-56">
+          <input
+            className="border border-slate-600 rounded-3xl w-full h-12 p-6 pl-8 pr-16 focus:outline-none"
+            type="text"
+            ref={inputElement}
+            placeholder="Enter your message"
+            onKeyDown={handleEnter}
+            onChange={() => setIsWriting(true)}
+          />
+
+          <div
+            className="absolute w-14 h-8 rounded-lg right-4 text-slate-700 font-medium top-1/2 transform -translate-y-1/2 cursor-pointer flex items-center justify-center"
+            onClick={sendInput}
+          >
+            {!isWriting ? <RiVoiceprintFill className="text-2xl" /> : "Send"}
+          </div>
+        </div>
+      )}
     </div>
   );
 };
