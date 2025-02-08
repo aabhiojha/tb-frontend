@@ -100,8 +100,7 @@ const Response = ({ isLoading }) => {
                   <ReactMarkdown className="prose prose-md">
                     {prompt?.ai
                       .replace("<tool-use>", "")
-                      .string.replace(/\{.*\}/, "")
-
+                      .replace(/\{.*\}/, "")
                       .replace("</tool-use>", "") || "Something went wrong"}
                   </ReactMarkdown>
                 </div>
