@@ -42,7 +42,10 @@ const Response = ({ isLoading }) => {
                             key={i}
                             className="p-4 bg-white rounded-lg shadow-md"
                           >
-                            <h4 className="font-bold text-lg">
+                            <h3 className="font-extrabold">{`Day: ${
+                              i + 1
+                            }`}</h3>
+                            <h4 className="font-semibold text-lg">
                               {place.location}
                             </h4>
                             <p className="text-gray-700">{place.highlight}</p>
@@ -95,7 +98,10 @@ const Response = ({ isLoading }) => {
               {!isLoading ? (
                 <div className="flex items-start space-x-4 w-3/4">
                   <ReactMarkdown className="prose prose-md">
-                    {prompt.ai}
+                    {prompt?.ai
+                      .replace("<tool-use>", "")
+                      .replace("{}", "")
+                      .replace("</tool-use>", "") || "Something went wrong"}
                   </ReactMarkdown>
                 </div>
               ) : (
