@@ -5,6 +5,7 @@ import { RiVoiceprintFill } from "react-icons/ri";
 import Response from "./Response.jsx";
 import axios from "axios";
 import useChatStore from "../store/chatStore.js";
+import LoadingSine from "./loading/LoadingSine.jsx";
 
 const Main = () => {
   const [isWriting, setIsWriting] = useState(false);
@@ -109,7 +110,10 @@ const Main = () => {
             </div>
           </div>
         ) : (
-          <Response isLoading={isLoading} />
+          <div>
+            <Response isLoading={isLoading} />
+            {!isSendable && <LoadingSine />}
+          </div>
         )}
       </div>
       {!showMap ? (
