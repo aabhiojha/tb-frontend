@@ -72,7 +72,7 @@ const useStore = create((set) => ({
     }
   },
 
-  showMap:false,
+  showMap: false,
   setShowMap: () => set(state => ({ showMap: !state.showMap }))
 
 }));
